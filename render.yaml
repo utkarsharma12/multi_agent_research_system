@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: mars-backend
+    env: docker
+    plan: free
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: HOST
+        value: "0.0.0.0"
+      - key: DATABASE_URL
+        value: "sqlite:///./data/research.db"
+      # You will need to add your GOOGLE_API_KEY manually in the Render Dashboard
+      # - key: GOOGLE_API_KEY
+      #   sync: false

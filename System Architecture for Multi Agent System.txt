@@ -1,0 +1,25 @@
+System Architecture 
+ 
+User 
+ │ 
+ ▼ 
+Frontend (React/Next.js) 
+ │ 
+ ▼ 
+Backend API (FastAPI) 
+ │ 
+ ▼ 
+Agent Orchestrator (LangGraph) 
+ │ 
+ ├── Research Agent 
+ ├── Fact Check Agent 
+ ├── Summarizer Agent 
+ ├── Report Agent 
+ └── Memory Agent 
+ │ 
+ ▼ 
+Vector Database 
+ │ 
+ ▼ 
+Knowledge Sources 
+(PDFs, Websites, Research Papers) 

@@ -1,0 +1,50 @@
+multi-agent-research-assistant/ 
+├── frontend/ 
+│   ├── app/ 
+│   ├── components/ 
+│   │   ├── Chat/ 
+│   │   ├── Sidebar/ 
+│   │   ├── Reports/ 
+│   │   └── Upload/ 
+│   ├── store/ 
+│   ├── services/ 
+│   └── public/ 
+│ 
+├── backend/ 
+│   ├── agents/ 
+│   │   ├── planner.py 
+│   │   ├── researcher.py 
+│   │   ├── fact_checker.py 
+│   │   ├── summarizer.py 
+│   │   └── reporter.py 
+│   │ 
+│   ├── graph/ 
+│   │   └── workflow.py 
+│   │ 
+│   ├── rag/ 
+│   │   ├── embeddings.py 
+│   │   ├── retriever.py 
+│   │   └── vector_store.py 
+│   │ 
+│   ├── api/ 
+│   │   ├── routes/ 
+│   │   └── controllers/ 
+│   │ 
+│   ├── database/ 
+│   │   ├── models.py 
+│   │   ├── schemas.py 
+│   │   └── connection.py 
+│   │ 
+│   ├── services/ 
+│   │   ├── pdf_loader.py 
+│   │   ├── web_search.py 
+│   │   └── arxiv_search.py 
+│   │ 
+│   ├── main.py 
+│   └── requirements.txt 
+│ 
+├── docker/ 
+│ 
+├── docs/ 
+│ 
+└── README.md 

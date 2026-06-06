@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mars_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma_data:/app/chroma_db
+      - uploads_data:/app/uploads
+      - sqlite_data:/app/data
+    environment:
+      # If you have external API keys, add them here or use an env_file
+      # - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - DATABASE_URL=sqlite:///./data/research.db
+      - HOST=0.0.0.0
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        # If your cloud server has a specific IP/Domain, pass it during build
+        # e.g., docker-compose build --build-arg NEXT_PUBLIC_API_URL=http://your-domain.com:8000
+        - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+    container_name: mars_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  chroma_data:
+    description: "Persists ChromaDB vectors"
+  uploads_data:
+    description: "Persists uploaded PDFs"
+  sqlite_data:
+    description: "Persists SQLite database"
