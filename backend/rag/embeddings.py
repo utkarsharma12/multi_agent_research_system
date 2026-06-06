@@ -1,74 +1,66 @@
 """
 Embeddings module.
-Uses sentence-transformers to generate vector embeddings for text and queries.
+Uses Google Gemini API to generate vector embeddings for text and queries,
+saving hundreds of MBs of RAM compared to local sentence-transformers.
 """
 
 import logging
 from typing import List
 
-from sentence_transformers import SentenceTransformer
+import google.generativeai as genai
 
 from config import settings
 
 logger = logging.getLogger(__name__)
 
-# Singleton model instance — loaded once on module import
-_model: SentenceTransformer = None
-
-
-def _get_model() -> SentenceTransformer:
-    """
-    Lazily load and return the SentenceTransformer model singleton.
-
-    Returns:
-        SentenceTransformer: The loaded embedding model.
-    """
-    global _model
-    if _model is None:
-        logger.info(f"Loading embedding model: {settings.EMBEDDING_MODEL}")
-        _model = SentenceTransformer(settings.EMBEDDING_MODEL)
-        logger.info("Embedding model loaded successfully")
-    return _model
+# Configure the API key
+if settings.GOOGLE_API_KEY:
+    genai.configure(api_key=settings.GOOGLE_API_KEY)
+else:
+    logger.warning("GOOGLE_API_KEY is not set. Embeddings will fail.")
 
 
 def embed_texts(texts: List[str]) -> List[List[float]]:
     """
-    Generate embeddings for a list of text strings.
+    Generate embeddings for a list of text strings using Gemini.
 
     Args:
         texts: List of text strings to embed.
 
     Returns:
         List of embedding vectors (each a list of floats).
-
-    Raises:
-        ValueError: If texts list is empty.
     """
     if not texts:
         raise ValueError("Cannot embed an empty list of texts")
 
-    model = _get_model()
-    embeddings = model.encode(texts, convert_to_numpy=True, show_progress_bar=False)
-    logger.debug(f"Generated embeddings for {len(texts)} texts, dim={embeddings.shape[1]}")
-    return embeddings.tolist()
+    logger.debug(f"Generating embeddings for {len(texts)} texts via Gemini API...")
+    
+    response = genai.embed_content(
+        model="models/text-embedding-004",
+        content=texts,
+        task_type="retrieval_document"
+    )
+    
+    return response['embedding']
 
 
 def embed_query(query: str) -> List[float]:
     """
-    Generate an embedding for a single query string.
+    Generate an embedding for a single query string using Gemini.
 
     Args:
         query: The query text to embed.
 
     Returns:
         A single embedding vector as a list of floats.
-
-    Raises:
-        ValueError: If query is empty or whitespace only.
     """
     if not query or not query.strip():
         raise ValueError("Query cannot be empty")
 
-    model = _get_model()
-    embedding = model.encode(query, convert_to_numpy=True, show_progress_bar=False)
-    return embedding.tolist()
+    response = genai.embed_content(
+        model="models/text-embedding-004",
+        content=query,
+        task_type="retrieval_query"
+    )
+    
+    return response['embedding']
