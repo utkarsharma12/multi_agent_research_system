@@ -38,6 +38,12 @@ def _get_client() -> chromadb.PersistentClient:
     return _client
 
 
+from chromadb.api.types import EmbeddingFunction, Documents, Embeddings
+
+class GeminiEmbeddingFunction(EmbeddingFunction):
+    def __call__(self, input: Documents) -> Embeddings:
+        return embed_texts(input)
+
 def _get_collection() -> chromadb.Collection:
     """
     Lazily get or create the research documents ChromaDB collection.
@@ -50,6 +56,7 @@ def _get_collection() -> chromadb.Collection:
         client = _get_client()
         _collection = client.get_or_create_collection(
             name=settings.CHROMA_COLLECTION,
+            embedding_function=GeminiEmbeddingFunction(),
             metadata={"hnsw:space": "cosine"},
         )
         logger.info(f"ChromaDB collection '{settings.CHROMA_COLLECTION}' ready")
