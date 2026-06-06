@@ -86,7 +86,15 @@ async def on_startup() -> None:
     logger.info("=" * 60)
 
     # Ensure required directories exist
-    for directory in [settings.UPLOAD_DIR, settings.CHROMA_PERSIST_DIR]:
+    directories = [settings.UPLOAD_DIR, settings.CHROMA_PERSIST_DIR]
+    
+    if settings.DATABASE_URL.startswith("sqlite:///"):
+        db_path = settings.DATABASE_URL.replace("sqlite:///", "")
+        db_dir = os.path.dirname(db_path)
+        if db_dir:
+            directories.append(db_dir)
+
+    for directory in directories:
         abs_dir = os.path.abspath(directory)
         os.makedirs(abs_dir, exist_ok=True)
         logger.info(f"  Directory ready: {abs_dir}")
