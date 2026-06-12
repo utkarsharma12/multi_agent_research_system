@@ -16,6 +16,11 @@
   --text-muted: #64748b;
   --glow-indigo: rgba(99, 102, 241, 0.3);
   --glow-purple: rgba(139, 92, 246, 0.3);
+  
+  --glass-bg: rgba(13, 18, 32, 0.7);
+  --glass-bright-bg: rgba(17, 24, 39, 0.9);
+  --input-bg: rgba(255, 255, 255, 0.04);
+  --pre-bg: rgba(0, 0, 0, 0.4);
 }
 
 * {
@@ -50,14 +55,14 @@ body {
 
 /* Glass card */
 .glass {
-  background: rgba(13, 18, 32, 0.7);
+  background: var(--glass-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border);
 }
 
 .glass-bright {
-  background: rgba(17, 24, 39, 0.9);
+  background: var(--glass-bright-bg);
   backdrop-filter: blur(20px);
   border: 1px solid var(--border-bright);
 }
@@ -214,7 +219,7 @@ body {
 
 /* Input styles */
 .input-primary {
-  background: rgba(255,255,255,0.04);
+  background: var(--input-bg);
   border: 1px solid var(--border);
   border-radius: 12px;
   color: var(--text-primary);
@@ -243,7 +248,7 @@ body {
 .markdown-body li { margin-bottom: 0.3rem; color: var(--text-secondary); line-height: 1.6; }
 .markdown-body strong { color: var(--text-primary); font-weight: 600; }
 .markdown-body code { background: rgba(99,102,241,0.15); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; color: #a5b4fc; }
-.markdown-body pre { background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; overflow-x: auto; margin: 0.5rem 0; }
+.markdown-body pre { background: var(--pre-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; overflow-x: auto; margin: 0.5rem 0; }
 .markdown-body a { color: var(--accent-primary); text-decoration: underline; }
 .markdown-body blockquote { border-left: 3px solid var(--accent-primary); padding-left: 1rem; margin: 0.5rem 0; color: var(--text-muted); font-style: italic; }
 
@@ -259,5 +264,22 @@ body {
   --text-muted: #64748b;
   --glow-indigo: rgba(99, 102, 241, 0.15);
   --glow-purple: rgba(139, 92, 246, 0.15);
+
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-bright-bg: rgba(255, 255, 255, 0.9);
+  --input-bg: rgba(0, 0, 0, 0.04);
+  --pre-bg: rgba(0, 0, 0, 0.05);
+
+  --color-slate-50: #0f172a;
+  --color-slate-100: #1e293b;
+  --color-slate-200: #334155;
+  --color-slate-300: #475569;
+  --color-slate-400: #64748b;
+  --color-slate-500: #94a3b8;
+  --color-slate-600: #cbd5e1;
+  --color-slate-700: #e2e8f0;
+  --color-slate-800: #f1f5f9;
+  --color-slate-900: #f8fafc;
+  --color-slate-950: #ffffff;
 }
 
