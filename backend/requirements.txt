@@ -36,3 +36,6 @@ httpx>=0.27.0
 
 # Web search (no API key needed)
 duckduckgo-search>=6.0.0
+
+# PostgreSQL support
+psycopg2-binary>=2.9.0
