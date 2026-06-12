@@ -60,10 +60,18 @@ const Sidebar: React.FC = () => {
         </button>
       )}
 
+      {/* Mobile backdrop */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-30 md:hidden backdrop-blur-sm transition-opacity"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar panel */}
       <aside
-        className={`flex flex-col h-full glass-bright transition-all duration-300 ease-in-out ${
-          sidebarOpen ? "w-72" : "w-0 overflow-hidden"
+        className={`flex flex-col h-full glass-bright transition-all duration-300 ease-in-out z-40 absolute md:relative ${
+          sidebarOpen ? "w-72 md:w-72 translate-x-0" : "w-72 md:w-0 -translate-x-full md:translate-x-0 overflow-hidden"
         }`}
       >
         {/* Header */}
@@ -115,7 +123,7 @@ const Sidebar: React.FC = () => {
               }`}
             >
               {item.icon}
-              <span className="hidden sm:inline">{item.label}</span>
+              <span>{item.label}</span>
             </button>
           ))}
         </div>

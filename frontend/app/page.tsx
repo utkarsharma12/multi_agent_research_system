@@ -6,15 +6,14 @@ import Sidebar from "@/components/Sidebar/Sidebar";
 import ChatWindow from "@/components/Chat/ChatWindow";
 import ReportViewer from "@/components/Reports/ReportViewer";
 import UploadZone from "@/components/Upload/UploadZone";
-import { Upload, X, Activity } from "lucide-react";
+import { Moon, Sun, Activity, Menu } from "lucide-react";
 
 export default function Home() {
-  const { activeTab, sidebarOpen } = useResearchStore();
-  const [showUpload, setShowUpload] = useState(false);
+  const { activeTab, sidebarOpen, setSidebarOpen, theme, toggleTheme } = useResearchStore();
 
   return (
     <div
-      className="flex h-screen overflow-hidden"
+      className="flex h-[100dvh] overflow-hidden"
       style={{ background: "var(--bg-primary)" }}
     >
       {/* Ambient background */}
@@ -33,13 +32,23 @@ export default function Home() {
       <Sidebar />
 
       {/* Main area */}
-      <div className="flex-1 flex flex-col min-w-0 relative">
+      <div className="flex-1 flex flex-col min-w-0 relative h-full">
         {/* Top bar */}
         <header
-          className="flex items-center justify-between px-6 py-4 border-b"
+          className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b"
           style={{ borderColor: "var(--border)" }}
         >
           <div className="flex items-center gap-3">
+            {/* Mobile Sidebar Toggle */}
+            {!sidebarOpen && (
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="md:hidden p-2 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition-colors"
+              >
+                <Menu size={20} />
+              </button>
+            )}
+            
             <div className="flex items-center gap-2">
               <Activity size={16} className="text-indigo-400" />
               <span className="text-sm font-semibold text-slate-300">
@@ -52,34 +61,37 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            {/* Upload button */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Theme Toggle */}
             <button
-              onClick={() => setShowUpload(!showUpload)}
-              className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold transition-all duration-200 border ${
-                showUpload
-                  ? "bg-indigo-500/20 border-indigo-500/40 text-indigo-300"
-                  : "border-slate-800 text-slate-400 hover:border-indigo-500/30 hover:text-slate-200"
-              }`}
+              onClick={toggleTheme}
+              className="relative overflow-hidden w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-all duration-300 border border-slate-800/60 text-slate-400 hover:border-indigo-500/30 hover:text-indigo-300 glass hover:scale-105"
+              title="Toggle Theme"
             >
-              {showUpload ? <X size={14} /> : <Upload size={14} />}
-              {showUpload ? "Close" : "Upload PDF"}
+              <div
+                className={`absolute inset-0 flex items-center justify-center transition-transform duration-500 ${
+                  theme === "dark" ? "translate-y-0 rotate-0 opacity-100" : "-translate-y-full rotate-90 opacity-0"
+                }`}
+              >
+                <Moon size={18} />
+              </div>
+              <div
+                className={`absolute inset-0 flex items-center justify-center transition-transform duration-500 ${
+                  theme === "light" ? "translate-y-0 rotate-0 opacity-100" : "translate-y-full -rotate-90 opacity-0"
+                }`}
+              >
+                <Sun size={18} />
+              </div>
             </button>
 
             {/* Status badge */}
             <div className="flex items-center gap-2 px-3 py-2 glass rounded-xl">
               <div className="w-2 h-2 rounded-full bg-green-400 pulse-dot" />
-              <span className="text-xs text-slate-500">5 Agents Ready</span>
+              <span className="text-xs text-slate-500 hidden sm:inline">5 Agents Ready</span>
+              <span className="text-xs text-slate-500 sm:hidden">Ready</span>
             </div>
           </div>
         </header>
-
-        {/* Upload panel (overlay) */}
-        {showUpload && (
-          <div className="absolute top-[73px] right-6 z-20 w-[480px] fade-in-up">
-            <UploadZone onClose={() => setShowUpload(false)} />
-          </div>
-        )}
 
         {/* Content */}
         <main className="flex-1 overflow-hidden">

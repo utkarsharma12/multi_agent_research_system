@@ -246,3 +246,18 @@ body {
 .markdown-body pre { background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; overflow-x: auto; margin: 0.5rem 0; }
 .markdown-body a { color: var(--accent-primary); text-decoration: underline; }
 .markdown-body blockquote { border-left: 3px solid var(--accent-primary); padding-left: 1rem; margin: 0.5rem 0; color: var(--text-muted); font-style: italic; }
+
+[data-theme='light'] {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #f1f5f9;
+  --bg-tertiary: #e2e8f0;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --border: rgba(99, 102, 241, 0.2);
+  --border-bright: rgba(99, 102, 241, 0.5);
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --glow-indigo: rgba(99, 102, 241, 0.15);
+  --glow-purple: rgba(139, 92, 246, 0.15);
+}
+

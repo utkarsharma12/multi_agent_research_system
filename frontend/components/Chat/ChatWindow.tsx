@@ -249,7 +249,7 @@ const ChatWindow: React.FC = () => {
   return (
     <div className="flex flex-col h-full">
       {/* Messages area */}
-      <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
+      <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6">
         {isEmpty ? (
           <div className="flex flex-col items-center justify-center h-full text-center fade-in-up">
             {/* Hero */}
@@ -303,7 +303,7 @@ const ChatWindow: React.FC = () => {
       </div>
 
       {/* Input area */}
-      <div className="px-6 pb-6 pt-2">
+      <div className="px-3 sm:px-6 pb-4 sm:pb-6 pt-2 relative">
         {showUploadZone && (
           <div className="mb-4">
             <UploadZone onClose={() => setShowUploadZone(false)} />
@@ -339,17 +339,17 @@ const ChatWindow: React.FC = () => {
             <button
               onClick={handleSubmit}
               disabled={(input.trim().length < MIN_QUERY_LENGTH && documents.length === 0) || isLoading}
-              className="btn-primary flex items-center gap-2 px-5 py-2.5 rounded-xl flex-shrink-0"
+              className="btn-primary flex items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-xl flex-shrink-0"
             >
               {isLoading ? (
                 <>
                   <Loader2 size={15} className="animate-spin" />
-                  <span className="text-sm">Researching…</span>
+                  <span className="text-sm hidden sm:inline">Researching…</span>
                 </>
               ) : (
                 <>
                   <Send size={15} />
-                  <span className="text-sm">Send</span>
+                  <span className="text-sm hidden sm:inline">Send</span>
                 </>
               )}
             </button>

@@ -85,6 +85,10 @@ interface ResearchState {
 
   // Reset session
   newChat: () => void;
+
+  // Theme
+  theme: "dark" | "light";
+  toggleTheme: () => void;
 }
 
 const INITIAL_AGENT_STEPS: AgentStep[] = [
@@ -147,5 +151,19 @@ export const useResearchStore = create<ResearchState>((set) => ({
       activeAgentSteps: INITIAL_AGENT_STEPS.map((s) => ({ ...s })),
       activeChatId: null,
       isLoading: false,
+    }),
+
+  theme: "dark",
+  toggleTheme: () =>
+    set((s) => {
+      const newTheme = s.theme === "dark" ? "light" : "dark";
+      if (typeof window !== "undefined") {
+        if (newTheme === "light") {
+          document.documentElement.setAttribute("data-theme", "light");
+        } else {
+          document.documentElement.removeAttribute("data-theme");
+        }
+      }
+      return { theme: newTheme };
     }),
 }));
