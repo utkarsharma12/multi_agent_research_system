@@ -36,9 +36,9 @@ COPY backend/ ./backend/
 # Copy the built frontend static files from Stage 1 into the location main.py expects
 COPY --from=frontend-builder /app/frontend/out ./frontend/out
 
-# Expose port (Render sets the PORT env var dynamically, default to 10000)
-EXPOSE 10000
+# Expose the port (Render sets the PORT env var dynamically)
+EXPOSE 8000
 
-# Start Uvicorn from the backend directory
+# Start Uvicorn from the backend directory using the PORT variable
 WORKDIR /app/backend
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "10000"]
+CMD sh -c "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"

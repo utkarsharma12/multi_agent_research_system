@@ -154,7 +154,7 @@ FRONTEND_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "fronten
 if os.path.exists(os.path.join(FRONTEND_DIR, "_next")):
     app.mount("/_next", StaticFiles(directory=os.path.join(FRONTEND_DIR, "_next")), name="next-assets")
 
-@app.get("/", include_in_schema=False)
+@app.api_route("/", methods=["GET", "HEAD"], include_in_schema=False)
 async def serve_root():
     """Serve the Next.js index.html at the root."""
     index_path = os.path.join(FRONTEND_DIR, "index.html")
