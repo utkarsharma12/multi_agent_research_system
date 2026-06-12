@@ -8,7 +8,7 @@ and initializes the database and vector store on startup.
 import logging
 import os
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
@@ -145,18 +145,40 @@ app.include_router(reports_router)
 # ---------------------------------------------------------------------------
 
 
-@app.get("/", response_model=HealthResponse, tags=["Health"])
-async def root() -> HealthResponse:
-    """
-    Root health check endpoint.
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
-    Returns:
-        HealthResponse with status 'ok' and application name.
-    """
-    return HealthResponse(
-        status="ok",
-        message="Multi-Agent Research System",
-    )
+FRONTEND_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "out")
+
+# Mount Next.js _next assets if they exist
+if os.path.exists(os.path.join(FRONTEND_DIR, "_next")):
+    app.mount("/_next", StaticFiles(directory=os.path.join(FRONTEND_DIR, "_next")), name="next-assets")
+
+@app.get("/", include_in_schema=False)
+async def serve_root():
+    """Serve the Next.js index.html at the root."""
+    index_path = os.path.join(FRONTEND_DIR, "index.html")
+    if os.path.isfile(index_path):
+        return FileResponse(index_path)
+    return JSONResponse(status_code=404, content={"detail": "Frontend not built yet."})
+
+@app.get("/{full_path:path}", include_in_schema=False)
+async def serve_frontend(full_path: str):
+    """Catch-all to serve frontend static files or fallback to index.html for SPA routing."""
+    # Do not intercept API requests
+    if full_path.startswith("api/") or full_path.startswith("docs") or full_path.startswith("openapi.json"):
+        raise HTTPException(status_code=404, detail="Not found")
+        
+    path = os.path.join(FRONTEND_DIR, full_path)
+    if os.path.isfile(path):
+        return FileResponse(path)
+        
+    # SPA fallback
+    index_path = os.path.join(FRONTEND_DIR, "index.html")
+    if os.path.isfile(index_path):
+        return FileResponse(index_path)
+        
+    return JSONResponse(status_code=404, content={"detail": "Frontend not found."})
 
 
 @app.get("/health", response_model=HealthResponse, tags=["Health"])
